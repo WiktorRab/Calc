@@ -107,7 +107,7 @@ function oblicz () {
 function onOperator (op) {
   if ((wartosc.value.match(/^[-]?$/) && op.match(/[+*/^%]/)) || wartosc.value.endsWith(op)) return
 
-  if (wartosc.value.match(/[^0-9%()]$/)) wartosc.value = wartosc.value.slice(0, -1) + op
+  if (wartosc.value.match(/[^0-9%()π]$/)) wartosc.value = wartosc.value.slice(0, -1) + op
   else wartosc.value += op
 }
 const todos = ref([])
