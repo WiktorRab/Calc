@@ -50,7 +50,7 @@
 
             <!-- <div class="q-pa-md q-gutter-sm bg-blue" v-if="visible"> -->
           <q-dialog :modelValue="modelValue" @update:modelValue="v => $emit('update:modelValue', v)" >
-            <q-card style="width: 95vw; height: 90vh;" >
+            <q-card style="width: 95vw" >
                 <q-card-section >
                   <div class="text-h6">History of calculations</div>
                 </q-card-section>
@@ -73,8 +73,8 @@
                     </q-virtual-scroll>
               <q-separator />
 
-                <q-card-actions align="right">
-                    <q-btn flat label="Accept" color="green" v-close-popup />
+                <q-card-actions class="justify-around">
+                    <q-btn  label="close" color="blue-4" v-close-popup />
                     <q-btn @click="todos=[] " icon="delete" color="red"/>
                 </q-card-actions>
             </q-card>
@@ -88,9 +88,9 @@
 import { ref } from 'vue'
 import CalcBtn from 'src/components/CalcBtn.vue'
 // import CalcDialog from 'src/components/CalcDialog.vue'
-// import { useQuasar } from 'quasar'
+import { useQuasar } from 'quasar'
 
-// const $q = useQuasar()
+const $q = useQuasar()
 const wartosc = ref('')
 
 defineProps({
@@ -99,10 +99,12 @@ defineProps({
 defineEmits(['update:modelValue'])
 
 function oblicz () {
-  const current = wartosc.value
-  wartosc.value = String(eval(wartosc.value.replace(',', '.').replace('^', '**').replace('π', '3.1415926536').replace('%', '/100').replace(/√[(](.+?)[)]/g, 'Math.sqrt($1)'))).replace('.', ',') // eslint-disable-line no-eval
+  try {
+    const current = wartosc.value
+    wartosc.value = String(eval(wartosc.value.replace(',', '.').replace('^', '**').replace('π', '3.1415926536').replace('%', '/100').replace(/√[(](.+?)[)]/g, 'Math.sqrt($1)'))).replace('.', ',') // eslint-disable-line no-eval
 
-  if (current.match(/[+*/^%]/)) todos.value.push(`${current} = ${wartosc.value}`)
+    if (current.match(/[+*/^%]/)) todos.value.push(`${current} = ${wartosc.value}`)
+  } catch { $q.notify({ message: 'error', color: 'negative' }) }
 }
 function onOperator (op) {
   if ((wartosc.value.match(/^[-]?$/) && op.match(/[+*/^%]/)) || wartosc.value.endsWith(op)) return
