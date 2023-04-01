@@ -13,8 +13,8 @@
         <div class="row justify-between q-mx-sm">
           <CalcBtn @click=" onOperator('%') " class="bg-blue-4" icon="%"/>
           <CalcBtn @click="wartosc = wartosc +  'π' " class="bg-blue-4" icon="π"/>
-          <CalcBtn @click="wartosc +='('" class="bg-blue-4" label="("/>
-          <CalcBtn @click="wartosc +=')'" class="bg-blue-4" label=")"/>
+          <CalcBtn @click="wartosc +='('" class="bg-blue-4" icon="("/>
+          <CalcBtn @click="wartosc +=')'" class="bg-blue-4" icon=")"/>
         </div>
         <div class="row justify-between q-mx-sm">
           <CalcBtn @click="wartosc=''" class="bg-red-4" label="AC"/>
