@@ -17,10 +17,10 @@
           <CalcBtn @click="wartosc +=')'" class="bg-blue-4" label=")"/>
         </div>
         <div class="row justify-between q-mx-sm">
-          <CalcBtn @click="wartosc=''" class="bg-blue-4" label="AC"/>
-          <CalcBtn @click="wartosc !== '' && (wartosc += '^')" class="bg-blue-4" label="^"/>
+          <CalcBtn @click="wartosc=''" class="bg-red-4" label="AC"/>
+          <CalcBtn @click="wartosc !== '' && (wartosc += '^')" class="bg-blue-4" icon="^"/>
           <CalcBtn @click="wartosc +='√('" class="bg-blue-4" icon="√"/>
-          <CalcBtn @click="onOperator('/')" class="bg-blue-4" label="/"/>
+          <CalcBtn @click="onOperator('/')" class="bg-blue-4" icon="/"/>
         </div>
         <div class="row justify-between q-mx-sm">
           <CalcBtn @click="wartosc +='7'" label="7"/>
@@ -43,7 +43,7 @@
         <div class="row justify-between q-mx-sm">
           <CalcBtn @click="wartosc.endsWith(',') || (wartosc +=',')" label=","/>   <!-- || oznacza ze jezeli to po lewej jest prawda nie wykona tego po prawej i na odwrot -->
           <CalcBtn @click="wartosc +='0'" label="0"/>
-          <CalcBtn @click="wartosc = wartosc.slice(0,-1)" icon="backspace" class="bg-blue-4"></CalcBtn>
+          <CalcBtn @click="wartosc = wartosc.slice(0,-1)" icon="backspace" ></CalcBtn>
           <CalcBtn @click="wartosc !== '' && oblicz()" icon="drag_handle" class="bg-blue-4"/>
         </div>
       </div>
@@ -101,7 +101,7 @@ defineEmits(['update:modelValue'])
 function oblicz () {
   try {
     const current = wartosc.value
-    wartosc.value = String(eval(wartosc.value.replace(/,/g, '.').replace('^', '**').replace('π', '3.1415926536').replace('%', '/100').replace(/√[(](.+?)[)]/g, 'Math.sqrt($1)'))).replace('.', ',') // eslint-disable-line no-eval
+    wartosc.value = String(eval(wartosc.value.replace(/,/g, '.').replace('^', '**').replace(/π/g, '3.1415926536').replace('%', '/100').replace(/√[(](.+?)[)]/g, 'Math.sqrt($1)'))).replace('.', ',') // eslint-disable-line no-eval
 
     if (current.match(/[+*/^%]/)) todos.value.push(`${current} = ${wartosc.value}`)
   } catch { $q.notify({ message: 'error', color: 'negative' }) }
