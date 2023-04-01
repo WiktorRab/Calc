@@ -101,7 +101,7 @@ defineEmits(['update:modelValue'])
 function oblicz () {
   try {
     const current = wartosc.value
-    wartosc.value = String(eval(wartosc.value.replace(',', '.').replace('^', '**').replace('π', '3.1415926536').replace('%', '/100').replace(/√[(](.+?)[)]/g, 'Math.sqrt($1)'))).replace('.', ',') // eslint-disable-line no-eval
+    wartosc.value = String(eval(wartosc.value.replace(/,/g, '.').replace('^', '**').replace('π', '3.1415926536').replace('%', '/100').replace(/√[(](.+?)[)]/g, 'Math.sqrt($1)'))).replace('.', ',') // eslint-disable-line no-eval
 
     if (current.match(/[+*/^%]/)) todos.value.push(`${current} = ${wartosc.value}`)
   } catch { $q.notify({ message: 'error', color: 'negative' }) }
