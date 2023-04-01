@@ -58,7 +58,7 @@
               <q-separator />
 
                 <q-virtual-scroll
-                   style="height: 70vh;"
+                   style="height: 60vh;"
                   :items="todos"
                   separator
                   v-slot="{ item, index }"
