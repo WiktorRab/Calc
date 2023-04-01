@@ -11,9 +11,15 @@
           </q-item-section>
         </q-item>
         <div class="row justify-between q-mx-sm">
-          <CalcBtn @click=" wartosc=''" class="bg-blue-4" label="AC"/>
-          <CalcBtn @click="wartosc = wartosc + '*' + wartosc.slice(-1)" class="bg-blue-4" label="x²"/>
-          <CalcBtn @click="wartosc ='√'+ wartosc.slice(-1)" class="bg-blue-4" icon="√"/>
+          <CalcBtn @click=" onOperator('%') " class="bg-blue-4" icon="%"/>
+          <CalcBtn @click="wartosc = wartosc +  'π' " class="bg-blue-4" icon="π"/>
+          <CalcBtn @click="wartosc +='('" class="bg-blue-4" label="("/>
+          <CalcBtn @click="wartosc +=')'" class="bg-blue-4" label=")"/>
+        </div>
+        <div class="row justify-between q-mx-sm">
+          <CalcBtn @click="wartosc=''" class="bg-blue-4" label="AC"/>
+          <CalcBtn @click="wartosc !== '' && (wartosc += '^')" class="bg-blue-4" label="^"/>
+          <CalcBtn @click="wartosc +='√('" class="bg-blue-4" icon="√"/>
           <CalcBtn @click="onOperator('/')" class="bg-blue-4" label="/"/>
         </div>
         <div class="row justify-between q-mx-sm">
@@ -38,7 +44,7 @@
           <CalcBtn @click="wartosc.endsWith(',') || (wartosc +=',')" label=","/>   <!-- || oznacza ze jezeli to po lewej jest prawda nie wykona tego po prawej i na odwrot -->
           <CalcBtn @click="wartosc +='0'" label="0"/>
           <CalcBtn @click="wartosc = wartosc.slice(0,-1)" icon="backspace" class="bg-blue-4"></CalcBtn>
-          <CalcBtn @click="oblicz" icon="drag_handle" class="bg-blue-4"/>
+          <CalcBtn @click="wartosc !== '' && oblicz()" icon="drag_handle" class="bg-blue-4"/>
         </div>
       </div>
 
@@ -94,14 +100,14 @@ defineEmits(['update:modelValue'])
 
 function oblicz () {
   const current = wartosc.value
-  wartosc.value = String(eval(wartosc.value.replace(',', '.'))).replace('.', ',') // eslint-disable-line no-eval
+  wartosc.value = String(eval(wartosc.value.replace(',', '.').replace('^', '**').replace('π', '3.1415926536').replace('%', '/100').replace(/√[(](.+?)[)]/g, 'Math.sqrt($1)'))).replace('.', ',') // eslint-disable-line no-eval
 
-  todos.value.push(`${current} = ${wartosc.value}`)
+  if (current.match(/[+*/^%]/)) todos.value.push(`${current} = ${wartosc.value}`)
 }
 function onOperator (op) {
-  if (wartosc.value.endsWith(op)) return
+  if ((wartosc.value.match(/^[-]?$/) && op.match(/[+*/^%]/)) || wartosc.value.endsWith(op)) return
 
-  if (wartosc.value.match(/\D$/)) wartosc.value = wartosc.value.slice(0, -1) + op
+  if (wartosc.value.match(/[^0-9%()]$/)) wartosc.value = wartosc.value.slice(0, -1) + op
   else wartosc.value += op
 }
 const todos = ref([])
