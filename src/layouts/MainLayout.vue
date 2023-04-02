@@ -7,7 +7,7 @@
           Calc App
         </q-toolbar-title>
         <CalcBtn @click="visible = !visible" style="height: 40px;" icon="history" flat />
-        <div>v1.1.4</div>
+        <div>v1.2.0</div>
       </q-toolbar>
     </q-header>
 
