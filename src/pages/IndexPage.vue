@@ -11,15 +11,15 @@
           </q-item-section>
         </q-item>
         <div class="row justify-between q-mx-sm">
-          <CalcBtn @click=" onOperator('%') " class="bg-blue-4" icon="%"/>
-          <CalcBtn @click="wartosc = wartosc +  'π' " class="bg-blue-4" icon="π"/>
-          <CalcBtn @click="wartosc +='('" class="bg-blue-4" icon="("/>
-          <CalcBtn @click="wartosc +=')'" class="bg-blue-4" icon=")"/>
+          <CalcBtn @click=" onOperator('%') " class="bg-blue-4" label="%" style="font-size: 1.8rem;"/>
+          <CalcBtn @click="wartosc += 'π' " class="bg-blue-4" icon="mdi-pi" style="font-size: 1.5rem;" />
+          <CalcBtn @click="wartosc +='('" class="bg-blue-4" label="(" style="font-size: 1.8rem;"/>
+          <CalcBtn @click="wartosc +=')'" class="bg-blue-4" label=")" style="font-size: 1.8rem;"/>
         </div>
         <div class="row justify-between q-mx-sm">
           <CalcBtn @click="wartosc=''" class="bg-red-4" label="AC"/>
-          <CalcBtn @click="wartosc !== '' && (wartosc += '^')" class="bg-blue-4" icon="^"/>
-          <CalcBtn @click="wartosc +='√('" class="bg-blue-4" icon="√"/>
+          <CalcBtn @click="onOperator('^')" class="bg-blue-4" icon="^"/>
+          <CalcBtn @click="wartosc +='√('" class="bg-blue-4" icon="fas fa-square-root-variable"/>
           <CalcBtn @click="onOperator('/')" class="bg-blue-4" icon="/"/>
         </div>
         <div class="row justify-between q-mx-sm">
@@ -107,6 +107,7 @@ function oblicz () {
   } catch { $q.notify({ message: 'error', color: 'negative' }) }
 }
 function onOperator (op) {
+  // console.log(`wartosc = ${wartosc.value}, op = ${op}`)
   if ((wartosc.value.match(/^[-]?$/) && op.match(/[+*/^%]/)) || wartosc.value.endsWith(op)) return
 
   if (wartosc.value.match(/[^0-9%()π]$/)) wartosc.value = wartosc.value.slice(0, -1) + op
